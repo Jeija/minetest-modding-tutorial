@@ -1,0 +1,103 @@
+Minetest-c55 Modding in Lua
+
+Einführung:
+Minetest-c55 (test.mine.bz) ist ein Minecraft-Klon, entwickelt vom finnischen Programmierer 'celeron55'.
+Es verfügt unter anderem über einen sogenannte ScriptAPI, die zur Programmierung von Mods eingesetzt wird.
+Dieses Tutorial soll erklären, wie die Entwicklung von Mods funktioniert.
+
+Voraussetzungen:
+Um dieses Tutorial richtig verstehen zu können, sollten sie Grundlegende Kenntnisse in der Programmierung, bevorzugt Lua haben.
+
+Kapitel 0: Anlegen eines Mods
+Um einen Mod zu programmieren, muss unter dem Verzeichnis ~/.minetest/usermods ein Ordner mit dem Namen des Mods angelegt werden. Darin muss zum einen die Datei 'init.lua', die die Programme enthält und ein weiterer Ordner mit dem Namen 'textures' angelegt werden.
+
+Kapitel 1: Der erste Mod!
+Als ersten Mod werden sie einen Holzblock erstellen, der aber zu Dekorationszwecken verwendet werden kann. Dazu wird der Ordner 'tutorial' und die dazugehörigen Dateien wie in Kapitel 0 beschrieben erstellt.
+In die init.lua muss der folgende Quellcode:
+
+minetest.register_node("tutorial:holz", {
+	tile_images = {"holz.png"},
+	material = minetest.digprop_constanttime(1),
+})
+
+In den Ordner textures muss die Datei 'holz.png' aus dem Projektordner 'Texturen' kopiert werden.
+Wenn minetest nun gestartet wird, wird dabei automatisch der Quellcode kompiliert und geladen.
+Nun 'ingame' das Chatfenster mit 'T' öffnen und sich durch '/giveme tutorial:holz' einen Holzblock erschummeln. Fertig ist der erste Mod!
+Nehmen wir einmal den Quellcode auseinander:
+Die Funktion 'minetest.register_node' ist dafür verantwortlich, neue Blöcke zum Spiel hinzuzufügen.
+Als Parameter müssen zum einen der Namen des neuen Blocks ("tutorial:holz") sowie eine Lua-Tabelle mit verschiedenen Parametern übergeben werden.
+Darunter befindet sich tile_images, was die Textur des Blocks vorgibt, und mit Komma getrennt material, was die Eigenschaften bezüglich der Abbaugeschwindigkeit angibt. 'minetest.digprop_constanttime(1)' gibt demzufolge an, dass der Spieler, egal welches Werkzeug er verwendet, 1 Sekunde zum Abbauen des Blocks braucht.
+Alternativ könnte man zum Beispiel auch
+material = minetest.digprop_woodlike(1.5),
+verwenden. Dadurch brauch das abbauen des Blocks 1.5 mal so lang, als bei einem normalen Holzblock.
+Außerdem bevorzugt dieser Wert auch Äxte, da diese Holz schneller abbauen als andere Werkzeuge.
+
+Kapitel 2: Crafting!
+Obwohl das Spiel Minetest im Gegensatz zu MineCraft das Wort nicht im Namen trägt, ist Crafting dennoch ein Grundlegender Bestandteil des Spielprinzips. Als Crafting bezeichnet man das Herstellen von Gegentständen aus anderen. So wird z.B. eine Steinaxt aus Stöcken und Steinen hergestellt. [Screenshot]
+Um das Deko-Holz aus Kapitel 1 auch craften zu können , müssen sie den folgenden Code in die init.lua einfügen:
+
+minetest.register_craft({
+	output = '"tutorial:holz" 2',
+	recipe = {
+		{'default:wood', 'default:wood', ''},
+		{'default:wood', 'default:wood', ''},
+		{'', '', ''},
+	}
+})
+
+[screenshot]
+
+Die Funktion minetest.register_craft() registriert einen 'crafting'-Vorgang. Der Parameter output gibt an, welcher Gegenstand beim Vorgang herauskommt, hier unser Holz. Die 2 gibt an, dass 2 Blöcke Holz entstehen. Das Rezept unten gibt an, woraus das Holz 'gecraftet' werden kann; Jeder String steht für ein Feld beim Crafting. Probieren sie auch andere Kombinationen aus!
+
+Was bedeutet eigentlich das default vor wood?
+'default' steht ,wie tutorial:* für den tutorial-mod, für den default-mod. Dieser definiert alle grundlegenden im Spiel vorkommende Gegenstände. 
+Der default mod findet sich bei einer run-in-place-version von minetest unter minetest/data/mods/default/init.lua
+Darin enthalten ist auch z.B. default:wood.
+
+Kaptiel 4: ABMs & Positionen!
+ABMs sind Arbeitsbeschaffungsmaßnahmen für Blöcke, sie verschaffen unserem Tutorial-Holz sinnlose aufgaben. Wie wäre es, wenn das Tutorial-Holz einfach nach einer bestimmten Zeit wieder zu normalem Holz wird?
+Dazu müssen Sie diesen Code noch an die init.lua dranhängen:
+
+minetest.register_abm(
+	{nodenames = {"tutorial:holz"},
+	interval = 30,
+	chance = 1,
+	action = function(pos)
+		minetest.env:add_node(pos, {name="default:wood"})
+	end,
+})
+
+Die Funktion minetest.register_abm registriert eine für jeden Block einer Sorte auszuführende Aktion. 'nodenames = {"tutorial:holz"}' gibt an, dass dass die Aktion für alle Tutorial-Holzblöcke ausgeführt wird. Probieren Sie doch auch einmal "default:stone", um auch alle Steinblöcke zu verwandeln. 'interval = 30' bedeutet, dass die Aktion alle 30 Sekunden ausgeführt wird und chance = 1 dass die Wahrscheinlichkeit dafür 1 (also immer) beträgt. Als Aktion (action) kann nun eine Funktion gesetzt werden, die pos (die Position des tutorial-Holzblockes) als Parameter hat. 
+Mit minetest.env:add_node(pos, NodeTable) kann nun ein Block an der Position pos mit den Attributen in NodeTable hinzugefügt werden. Um zu definieren, dass es sich um einen Default-Holzblock handelt, reicht es den namen anzugeben.
+Lehnen sie sich jetzt zurück und schauen sie zu, wie sich ihre Freunde aufregen, dass ihre Kreationen aus Deko-Holz wieder zu Standard-Holz werden.
+
+Angenommen, Sie wollen jetzt aber erreichen, dass auf jedem Erde-mit-Grass-Block hohes Grass wächst (also default:junglegrass). Dazu müssen Sie die Position pos modifizieren können.
+Dazu müssen Sie wissen, dass pos eine Tabelle ist die die folgenden Variablen enthält: x, y, z. 
+x und z sind Koordinaten in der Blockwelt nach Vorne-Hinten, Rechts-Links.
+y hingegen ist die Oben-Unten-Koordinate (je höher, desto größer y).
+Um nun hohes Grass über Erde-mit-Grass Blöcken wachsen zu lassen, können Sie den folgenden Code verwenden:
+
+minetest.register_abm(
+	{nodenames = {"default:dirt_with_grass"},
+	interval = 1,
+	chance = 100,
+	action = function(pos)
+		pos.y=pos.y+1
+		minetest.env:add_node(pos, {name="default:junglegrass"})
+	end,
+})
+
+Die Zeile pos.y=pos.y+1 manipuliert die Position so, dass es sich nun um die Position direkt über dem Erde-mit-Grass-Block handelt. Das Ausführ-Intervall beträgt hier 1 Sekunde, die Wahrscheinlichkeit, dass die Funktion aber wirklich ausgeführt wird liegt bei 1/100. So wird ihr minetest-Garten langsam aber sicher mit hohem Grass überwuchert.
+
+Dies ist nur eine kurze Eiführung in Minetest Lua Modding. Eine Englische Fassung dieses Tutorials finden sie unter [Forum Thread URL noch einfügen]. Die Englische Fassung ist umfangreicher als die Deutsche Version.
+
+Ich hoffe sie haben hiermit schon einen kurzen Einblick in die Modprogrammierung erhalten haben und diese Kenntnisse auch bei anderen Programmen hilfreich sind.
+
+Für weitere Informationen steht ihnen das Wiki von Minetest zu verfügung:
+http://c55.me/minetest/wiki/doku.php?id=code:lua_api
+
+Beide Links dienen nur als Kurzreferenz. Außerdem können sie im Minetestforum unter 
+c55.me/minetest/forum
+ihre Fragen loswerden oder ihre selbstgeschriebenen Mods präsentieren.
+Für fragen zu diesem Tutorial, schreiben sie eine eMail an
+norrepli[at]gmail.com

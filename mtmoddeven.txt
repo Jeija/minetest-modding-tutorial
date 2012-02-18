@@ -1,0 +1,132 @@
+Minetest-c55: Modding in Lua
+
+Introduction:
+Minetest-c55 (Website: test.mine.bz) is a Minecraft clone, developed by the finnish programmer 'celeron55'.
+It has a so-called ScriptAPI, which is used in order program Mods.
+
+Requirements:
+Basic Programming Knowledge, at best in Lua Language
+
+Chapter 0: Create a mod
+For creating a minetest mod you have to create a folder with the name of you mod in ~/.minetest/usermods/ (Linux Systemwide) / minetest/data/mods/ (Windows + Linux Run-in-place).
+In this folder, make another one called 'textures'. You should put the textures in this one.
+Additionally, create a file called 'init.lua'. This is the file that contains the source code of your mod.
+
+Chapter 1: Your first mod!
+First of all let's program a mod that adds a special kind of wood that can only be used for decoration.
+For this, create a mod called 'tutorial' as described in Chapter 0.
+Now copy-paste this into 'init.lua':
+
+minetest.register_node("tutorial:decowood", {
+	tile_images = {"tutorial_decowood.png"},
+	material = minetest.digprop_constanttime(1),
+})
+
+You also have to copy the file 'tutorial_decowood.png' from the folder with this Document to the textures folder mentioned in Chapter 0.
+
+When launching the game now, the mods are automatically loaded and compiled. This means when changing the code you simply have to 'Disconnect' and 'Start Game/Connect' again to try out the changes.
+Let's try out the first mod! Open the chat window ingame (press t) and enter "/giveme tutorial:decowood 99" (Without "" of course). This will add 99 blocks of the decorative wood to your inventory!
+
+Let's have a look at the source code:
+The function minetest.register_node(name, table) is responsible for adding new blocks to the game (node=block, but also torches, rails, ...) . It takes 2 Parameters: The name of the new block ("tutorial:decowood", the string before : MUST be the name of the mod folder) and a table with several properties of the block.
+In this case we use 2 properties:
+
+tile_images: Sets the texture of the block; You can use only 1 texture or multiple textures,
+seperated by commas {"tex1.png", "tex2.png", ...}. The game checks for the texture files in ALL textures folders of the game.
+
+material: This sets the time it takes to destroy the block. In this case (minetest.digprop_constanttime(1)) it is a constant time of 1 second.
+You could also use minetest.digprop_woodlike(1.5) which makes destruction with axes faster.
+
+Chapter 2: Crafting!
+Crafting does not only play an important role in minecraft, also minetest uses different crafting recipes. Therefore it is important to know what crafting means and how to code it! Crafting means creating Tools/Blocks/Other Objects. In minetest you have a 3x3 crafting area by default with a 1x1 output field. For example, a stone pickaxe can be made out of 2 Sticks and 3 Cobblestones:
+C C C
+  S
+  S
+S=Stick C=Cobblestone; Looks quite logic, doesn't it?
+
+So let's make a crafting recipe for the decorative wood of Chapter 0!
+
+Just append this to your init.lua:
+
+minetest.register_craft({
+	output = '"tutorial:decowood" 2',
+	recipe = {
+		{'default:wood', 'default:wood', ''},
+		{'default:wood', 'default:wood', ''},
+		{'', '', ''},
+	}
+})
+
+The function minetest.register_craft() registers a crafting process, it defines the recipe for something. It takes 1 parameter which is a table that contains 2 properties: output which sets the outcome of the crafting process and recipe which is the actual recipe for the output.
+Recipe must be a table with other tables inside. Every of the 3 tables defines another row of the crafting field. Every row contains 3 columns. In this case The crafting recipe is like that:
+W W
+W W
+W=Wood
+Easy, isn't it? You may also try out some other combinations!
+
+But why are wooden planks not simply called wood but 'default:wood'? Indeed, The name of a tool/block/other object MUST be modname:name. In this case, the mod is called 'tutorial' (name is preset by the folder name) and the block is called 'decowood', so it's tutorial:decowood.
+So what is 'default'? 'default' is the most important "mod" of minetest, in fact minetest itself is more like just a game engine, all the contents, materials, and other stuff are in several mods, like 'default' (standard tools/blocks), 'bucket' (Buckets: Lava/Water),...
+If you want to find out more about these mods and maybe use features they contain, just have a look in their init.lua!
+For Windows & Linux run-in-place these mods are in minetest/data; for Linux systemwide installation, these mods are in /usr/share/minetest/mods.
+
+Chapter 4: ABMs & Positioning
+ABMs add actions to blocks. For instance, the tutorial-wood could become normal wood after a few seconds. Append this code to your init.lua:
+
+minetest.register_abm(
+	{nodenames = {"tutorial:decowood"},
+	interval = 30,
+	chance = 1,
+	action = function(pos)
+		minetest.env:add_node(pos, {name="default:wood"})
+	end,
+})
+
+Try it out! It's really annoying to see all your decowood creations destroyed after 30 seconds, they simple become normal wood.
+But how does this work?
+The function minetest.register_abm registers an action for each block of the same type. 
+nodenames = {"tutorial:decowood'} means that the action is processed for each decowood block.
+You could also try "default:stone" instead of that to turn all stone blocks into wood. 
+interval = 30 means that the action is performed every 30 seconds. It starts counting at the beginning of the game. After 30 seconds all actions are processed, it doesn't matter when the block was placed.
+This is not a per-block timer!
+chance = 1 means that the probability of the action is 1:1, it happens in every case. 
+A higher value means that it's less probable.
+action = function(pos) is the function that is actually performed.
+It contiains the command minetest.env:add_node. This takes two parameters:
+First of all the position parameter (more informations later) and also a table which defines the properties of the block, e.g. the name, the direction it faces, ...
+In this case the name is enought to define what block you can see.
+
+So let's assume we want to create a mod that makes junglegrass grow above every dirt-with-grass block. This should be a slow process, one dirt-with-grass block after the other should be grown over.
+This is what we do:
+
+minetest.register_abm(
+	{nodenames = {"default:dirt_with_grass"},
+	interval = 1,
+	chance = 100,
+	action = function(pos)
+		pos.y=pos.y+1
+		minetest.env:add_node(pos, {name="default:junglegrass"})
+	end,
+})
+
+You should already know everything else but the line pos.y=pos.y+1.
+What is that for? 
+To understand it, you should know what a position variable in minetest is a table made up out of
+3 values:
+x, y and z.
+x and z are forward/backward; left/right values. Y is the up/down value. The player usually spawns near 0,0,0.
+The line pos.y=pos.y+1 manipulates the position to 1 Block above the dirt-with-grass node.
+
+There are some small other differences to our first abm. The interval is 1 in this case, but the chance (probability) is 100. Therefore the function is executed every second, but only in 1 of 100 cases. This makes your minetest garden slowly been overgrown by junglegrass.
+
+This is Jeija's modding tutorial Version 20120218.
+Check for new version on github.com/Jeija/minetest-modding-tutorial.
+
+For more information about minetest modding have a look at this reference: 
+http://c55.me/minetest/wiki/doku.php?id=code:lua_api
+
+For generic modding questions or specific questions, feel free to ask in the minetest forum:
+c55.me/minetest/forum
+For questions about this tutorial, ask in the thread for this tutorial:
+c55.me/minetest/forum/...
+
+Thanks for reading! Let's go develop your first own mod!!
