@@ -1,0 +1,179 @@
+<html>
+
+	<h2>
+		Minetest-c55 Modding in Lua
+	</h2>
+
+	<table with="100%">
+		<td width="90%">
+	<h3>
+		Einführung:
+	</h3>
+		Minetest-c55 (<a href="http://c55.me/minetest/">test.mine.bz</a>) ist ein Minecraft-Klon, entwickelt vom finnischen Programmierer 'celeron55'.
+		Es verfügt unter anderem über eine sogenannte ScriptAPI, die zur Programmierung von Mods eingesetzt wird.
+		Dieses Tutorial soll erklären, wie die Entwicklung von Mods funktioniert.
+	</td>
+		<td width="20%"><img src="1.png" width="128" height="128" title="Das Minetest Logo" /></td>
+	</table>
+
+	<img src="2.png" title="Eine typische Minetest Landschaft" />
+
+	<h3>
+		Vorraussetzungen:
+	</h3>
+
+	<p>
+		Um dieses Tutorial richtig verstehen zu können, sollten Sie grundlegende Kenntnisse in der Programmierung, bevorzugt Lua haben.
+	</p>
+
+	<h3>
+		Kapitel 0: Anlegen eines Mods
+	</h3>
+
+	<p>
+		Um einen Mod zu programmieren, muss unter dem Verzeichnis ~/.minetest/usermods ein Ordner mit dem Namen des Mods angelegt werden. Darin muss zum einen die Datei 'init.lua', die die Programme enthält und ein weiterer Ordner mit dem Namen 'textures' angelegt werden.
+	</p>
+	
+	<h3>
+		Kapitel 1: Der erste Mod!
+	</h3>
+
+	<p>
+		Als ersten Mod werden Sie einen Holzblock erstellen, der zu Dekorationszwecken verwendet werden kann. Dazu wird der Ordner 'tutorial' und die dazugehörigen Dateien wie in Kapitel 0 beschrieben erstellt.<br />
+		In die init.lua muss der folgende Quellcode eingefügt werden:
+	</p>
+
+		<tt>
+<pre>
+minetest.register_node("tutorial:holz",{
+        tile_images = {"holz.png"},
+        material = minetest.digprop_constanttime(1),
+})
+</pre>
+		</tt>
+
+	<p>
+		In den Ordner textures muss die Datei 'holz.png' aus dem Projektordner 'Texturen' kopiert werden. Wenn minetest nun gestartet wird, wird dabei automatisch der Quellcode kompiliert und geladen.<br />
+		Nun 'ingame' das Chatfenster mit 'T' öffnen und sich durch <i>/giveme tutorial:holz</i> einen Holzblock erschummeln. Fertig ist der erste Mod!<br />
+		Nehmen wir einmal den Quellcode auseinander:<br />
+		Die Funktion <tt>minetest.register_node</tt> ist dafür verantwortlich, neue Blöcke zum Spiel hinzuzufügen.<br />
+		Als Parameter müssen zum einen der Namen des neuen Blocks ("tutorial:holz") sowie eine Lua-Tabelle mit verschiedenen Parametern übergeben werden.<br />
+		Darunter befindet sich <tt>tile_images</tt>, welches die Textur des Blocks vorgibt, und mit Komma getrennt <tt>material</tt>, was die Eigenschaften bezüglich der Abbaugeschwindigkeit angibt. <tt>minetest.digprop_constanttime(1)</tt> gibt demzufolge an, dass der Spieler, egal welches Werkzeug er verwendet, 1 Sekunde zum Abbauen des Blocks braucht.<br />
+		Alternativ könnte man zum Beispiel auch<br />
+	<tt>	material = minetest.digprop_woodlike(1.5),</tt><br />
+		verwenden. Dadurch braucht das Abbauen des Blocks 1.5 mal so lang, als bei einem normalen Holzblock.<br />
+		Außerdem bevorzugt dieser Wert auch Äxte, da diese Holz schneller abbauen als andere Werkzeuge.<br />
+	</p>
+		
+	<h3>
+		Kapitel 2: Crafting!
+	</h3>
+	
+	<p>
+		Obwohl das Spiel Minetest im Gegensatz zu MineCraft das Wort nicht im Namen trägt, ist Crafting dennoch ein grundlegender Bestandteil des Spielprinzips. Als Crafting bezeichnet man das Herstellen von Gegenständen, indem man andere Gegenstände kombiniert.<br />
+		So wird z.B. eine Steinaxt aus Stöcken und Steinen hergestellt:<br />
+
+	<img src="3.png" title="So craftet man eine Steinaxt" /> <br /> <br />
+
+		Um das Deko-Holz aus Kapitel 1 auch craften zu können , müssen Sie den folgenden Code in die init.lua einfügen:
+	</p>
+
+		<tt>
+<pre>
+minetest.register_craft({
+        output = '"tutorial:holz" 2',
+        recipe = {
+                {'default:wood', 'default:wood', ''},
+                {'default:wood', 'default:wood', ''},
+                {'', '', ''},
+        }
+})
+</pre>
+		</tt>
+
+	<p>
+		Die Funktion <tt>minetest.register_craft()</tt> registriert einen Crafting-Vorgang. Der Parameter <tt>output</tt> gibt an, welcher Gegenstand beim Vorgang herauskommt, hier unser Holz. Die 2 gibt an, dass 2 Blöcke Holz entstehen. Das Rezept unten gibt an, woraus das Holz 'gecraftet' werden kann;<br />
+		<img src="4.png" title="So craftet man das Deko-Holz" /> <br />
+		
+		 Jeder String steht für ein Feld beim Crafting. Probieren Sie auch andere Kombinationen aus!
+	</p>
+
+	<p>
+		Was bedeutet eigentlich das default vor wood?<br />
+		'default' steht ,wie tutorial:* für den tutorial-mod, für den default-mod. Dieser definiert alle grundlegenden im Spiel vorkommende Gegenstände.<br />
+		Der default mod findet sich bei einer run-in-place-version von minetest unter minetest/data/mods/default/init.lua. <br />
+		Darin enthalten ist auch z.B. default:wood.<br />
+	</p>
+
+	<h3>
+		Kaptiel 3: ABMs & Positionen!
+	</h3>
+
+	<p>
+		ABMs sind Arbeitsbeschaffungsmaßnahmen für Blöcke, Sie verschaffen unserem Tutorial-Holz sinnlose Aufgaben. Wie wäre es, wenn das Tutorial-Holz einfach nach einer bestimmten Zeit wieder zu normalem Holz wird?<br />
+		Dazu müssen Sie diesen Code noch an die init.lua dranhängen:
+	</p>
+
+		<tt>
+<pre>
+minetest.register_abm(
+        {nodenames = {"tutorial:holz"},
+        interval = 30,
+        chance = 1,
+        action = function(pos)
+                minetest.env:add_node(pos, {name="default:wood"})
+        end,
+})
+</pre>
+		</tt>
+
+	<p>
+		Die Funktion <tt>minetest.register_abm</tt> registriert eine für jeden Block einer Sorte auszuführende Aktion. <tt>nodenames = {"tutorial:holz"}</tt> gibt an, dass die Aktion für alle Tutorial-Holzblöcke ausgeführt wird. Probieren Sie doch auch einmal "default:stone", um auch alle Steinblöcke zu verwandeln. <tt>interval = 30</tt> bedeutet, dass die Aktion alle 30 Sekunden ausgeführt wird und <tt>chance = 1</tt> dass die Wahrscheinlichkeit dafür 1 (also immer) beträgt. Als Aktion (<tt>action</tt>) kann nun eine Funktion gesetzt werden, die <tt>pos</tt> (die Position des tutorial-Holzblockes) als Parameter hat.<br /> 
+		Mit <tt>minetest.env:add_node(pos, NodeTable)</tt> kann nun ein Block an der Position <tt>pos</tt> mit den Attributen in NodeTable hinzugefügt werden. Um zu definieren, dass es sich um einen Default-Holzblock handelt, reicht es den Namen anzugeben.<br />
+		Lehnen Sie sich jetzt zurück und schauen Sie zu, wie sich Ihre Freunde aufregen, dass Ihre Kreationen aus Deko-Holz wieder zu Standard-Holz werden.
+	</p>
+
+	<p>
+		Angenommen, Sie wollen jetzt aber erreichen, dass auf jedem Erde-mit-Gras-Block hohes Gras wächst (also default:junglegrass). Dazu müssen Sie die Position <tt>pos</tt> modifizieren können.<br />
+		Dazu müssen Sie wissen, dass <tt>pos</tt> eine Tabelle ist die die folgenden Variablen enthält: x, y, z. <br />
+		x und z sind Koordinaten in der Blockwelt nach Vorne-Hinten, Rechts-Links.<br />
+		y hingegen ist die Oben-Unten-Koordinate (je höher, desto größer y).<br />
+		Um nun hohes Gras über Erde-mit-Gras Blöcken wachsen zu lassen, können Sie den folgenden Code verwenden:
+	</p>
+
+		<tt>
+<pre>
+minetest.register_abm(
+        {nodenames = {"default:dirt_with_grass"},
+        interval = 1,
+        chance = 100,
+        action = function(pos)
+                pos.y=pos.y+1
+                minetest.env:add_node(pos, {name="default:junglegrass"})
+        end,
+})
+</pre>
+		</tt>
+
+	<p>
+		Die Zeile <tt>pos.y=pos.y+1</tt> manipuliert die Position so, dass es sich nun um die Position direkt über dem Erde-mit-Gras-Block handelt. Das Ausführ-Intervall beträgt hier 1 Sekunde, die Wahrscheinlichkeit, dass die Funktion aber wirklich ausgeführt wird liegt bei 1/100. So wird Ihr minetest-Garten langsam, aber sicher mit hohem Gras überwuchert.
+	</p>
+
+	<p>
+		Dies ist nur eine kurze Einführung in Minetest Lua Modding. Eine englische Fassung dieses Tutorials finden Sie unter <a href="https://github.com/Jeija/minetest-modding-tutorial/blob/master/mtmoddeven.txt">https://github.com/Jeija/minetest-modding-tutorial/blob/master/mtmoddeven.txt</a>. Die englische Fassung ist umfangreicher als die deutsche Version.
+	</p>
+
+	<p>
+		Ich hoffe, dass Sie hiermit schon einen kurzen Einblick in die Modprogrammierung erhalten haben und diese Kenntnisse auch bei anderen Programmen hilfreich sind.
+	</p>
+
+	<p>
+		Für weitere Informationen steht Ihnen das <a href="http://c55.me/minetest/wiki/doku.php?id=code:lua_api">Wiki von Minetest</a> zur Verfügung.
+	</p>
+
+	<p>
+		Beide Links dienen nur als Kurzreferenz. Außerdem können Sie im <a href="http://c55.me/minetest/forum/">Minetestforum</a> Ihre Fragen loswerden oder Ihre selbstgeschriebenen Mods präsentieren.<br />
+		Für Fragen zu diesem Tutorial, schreiben Sie eine eMail an <a href="mailto:norrepli@googlemail.com">norreply@gmail.com</a>
+	</p>
+
+</html>
