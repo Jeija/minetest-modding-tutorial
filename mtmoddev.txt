@@ -54,7 +54,7 @@ Was bedeutet eigentlich das default vor wood?
 Der default mod findet sich bei einer run-in-place-version von minetest unter minetest/data/mods/default/init.lua
 Darin enthalten ist auch z.B. default:wood.
 
-Kaptiel 4: ABMs & Positionen!
+Kaptiel 3: ABMs & Positionen!
 ABMs sind Arbeitsbeschaffungsmaßnahmen für Blöcke, sie verschaffen unserem Tutorial-Holz sinnlose aufgaben. Wie wäre es, wenn das Tutorial-Holz einfach nach einer bestimmten Zeit wieder zu normalem Holz wird?
 Dazu müssen Sie diesen Code noch an die init.lua dranhängen:
 
