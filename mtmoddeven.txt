@@ -1,5 +1,23 @@
 Minetest-c55: Modding in Lua
 
+Introduction
+
+--- Modding with Minetest
+--- Requirements
+
+
+
+Chapter 1 - Modding Basics and Required understanding
+---Mod packs and item names
+---Creating a mod
+
+
+Chapter 2 - Tutorial
+
+Chapter 3 - ADMs and Positioning
+---Adms and Positioning
+
+
 
 
 Introduction
@@ -24,9 +42,22 @@ Basic Programming Knowledge, at best in Lua Language
 
 
 
-Chapter 0: Creating a mod
-===========================
 
+
+
+Chapter 1 - Modding basics
+==========================
+---Types of objects in Minetest---
+
+NODE:
+SPRITE
+
+--- Mod packs and item names ---
+
+In minetest, each item, block, and node
+
+
+--- Creating a mod ---
 
 For creating a minetest mod you have to create a new folder with the name of your mod in the mod folder
 
