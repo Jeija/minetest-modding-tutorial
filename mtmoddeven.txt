@@ -252,7 +252,7 @@ minetest.register_abm(
 })
 
 ----------------------------------------------------
-|  Code                                            |
+|  end of Code                                     |
 ----------------------------------------------------
 
 Try it out! It's really annoying to see all your decowood creations destroyed after 30 seconds, they simply become normal wood.
