@@ -131,7 +131,7 @@ S=Stick C=Cobblestone; Looks quite logic, doesn't it?
 
 So let's make a crafting recipe for the decorative wood of Chapter 0!
 
-Just append this to your init.lua:
+Just append (add) this to your init.lua file:
 
 ----------------------------------------------------
 |  Code                                            |
@@ -153,21 +153,26 @@ minetest.register_craft({
 
 The function minetest.register_craft() registers a crafting process, it defines the recipe for something. 
 
-It takes 1 parameter which is a table that contains 2 properties: 
-output which sets the outcome of the crafting process and recipe which is the actual recipe for the output.
-Recipe must be a table with other tables inside. Every of the 3 tables defines another row of the crafting field. Every row contains 3 columns. In this case The crafting recipe is like that:
+It takes 1 parameter which is a table that contains 2 properties: (and an optional third)
+1) output - which sets the outcome of the crafting process and recipe which is the actual recipe for the output.
+2) Recipe must be a table with other tables inside. Every of the 3 tables defines another row of the crafting field. Every row contains 3 columns. In this case The crafting recipe is like that:
 W W
 W W
 W=Wood
+3) type - if you want to make it a furnace craft add type="cook",
+
 Easy, isn't it? You may also try out some other combinations!
 
 But why are wooden planks not simply called wood but 'default:wood'?
+
 Indeed, The name of a tool/block/other object MUST be modname:name. In this case, the mod is called 'tutorial' (name is preset by the folder name) and the block is called 'decowood', so it's tutorial:decowood.
 
 So what is 'default'? 'default' is the most important "mod" of minetest, in fact minetest itself is more like just a game engine, all the contents, materials, and other stuff are in several mods, like 'default' (standard tools/blocks), 'bucket' (Buckets: Lava/Water),...
 
 If you want to find out more about these mods and maybe use features they contain, just have a look in their init.lua!
-For Windows & Linux run-in-place these mods are in minetest/data; for Linux systemwide installation, these mods are in /usr/share/minetest/mods.
+
+For Windows & Linux run-in-place these mods are in minetest/games/minetest_game/;
+for Linux systemwide installation, these mods are in /usr/share/minetest/games/minetest_game
 
 
 
@@ -213,7 +218,10 @@ In this case the name is enough to define what block you can see.
 So let's assume we want to create a mod that makes junglegrass grow above every dirt-with-grass block. This should be a slow process, one dirt-with-grass block after the other should be grown over.
 This is what we do:
 
-minetest.register_abm(
+minetest.regis----------------------------------------------------
+|  Code                                            |
+----------------------------------------------------
+ter_abm(
 	{nodenames = {"default:dirt_with_grass"},
 	interval = 1,
 	chance = 100,
