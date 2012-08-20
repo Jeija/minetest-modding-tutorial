@@ -167,7 +167,8 @@ material: This sets the time it takes to destroy the block. In this case (minete
 You could also use minetest.digprop_woodlike(1.5) which makes destruction with axes faster.
 
 
----Crafting---
+Chapter 3 - Crafting
+====================
 
 
 Crafting does not only play an important role in minecraft, minetest also uses different crafting recipes. Therefore it is important to know what crafting means and how to code it! 
@@ -272,10 +273,10 @@ In this case the name is enough to define what block you can see.
 So let's assume we want to create a mod that makes junglegrass grow above every dirt-with-grass block. This should be a slow process, one dirt-with-grass block after the other should be grown over.
 This is what we do:
 
-minetest.regis----------------------------------------------------
+----------------------------------------------------
 |  Code                                            |
 ----------------------------------------------------
-ter_abm(
+minetest.register_abm(
 	{nodenames = {"default:dirt_with_grass"},
 	interval = 1,
 	chance = 100,
