@@ -20,7 +20,7 @@ Requirements:
 Basic Programming Knowledge, at best in Lua Language
 --- Don't have any knowledge? Use the following to learn:
 -------- codecademy.com -Learn the basics of programming (it is Javascript (not Java) but still helps)
--------- Google lua tutorials
+-------- Internet Search (google,yahoo) lua tutorials
 
 
 
