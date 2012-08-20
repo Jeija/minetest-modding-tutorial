@@ -27,22 +27,30 @@ Basic Programming Knowledge, at best in Lua Language
 Chapter 0: Create a mod
 =======================
 
+
+For creating a minetest mod you have to create a new folder with the name of your mod in the mod folder
+
+-----------------------------------------------------------------
+| Linux Systemwide:  ~/.minetest*/usermods/                     | 
+|                                                               |
+| Windows + Linux Run-in-place: minetest*/mods/minetest         |
+|---------------------------------------------------------------|
+| * The place where minetest was installed/extracted to.        |
+-----------------------------------------------------------------
+
+
+In the new folder, create a file called 'init.lua'. This is the file that will contain the source code for the mod.
+
 ----------------------------------------------------------
 |  To do this on Window, use WordPad. Click file>save as |
 | dropdown to all files, and type 'init.lua' in the file |
-| name box. Or you can use a lua compatible editor such  |
-| as 'context'  WARNING: DONT USE NOTEPAD                |
+| name box.                                              |
+| Or you can use a lua compatible editor such            | 
+| as 'context'  WARNING: DO NOT USE NOTEPAD              |
 ---------------------------------------------------------
 
-For creating a minetest mod you have to create a new folder with the name of your mod in
+Then make another sub folder called 'textures'. This is where you will place the textures
 
-Linux:  ~/.minetest/usermods/ (Linux Systemwide) 
-
-Windows: /minetest/data/mods/ (Windows + Linux Run-in-place).
-
-In the new folder, create a file called 'init.lua'.
-
-make another one called 'textures'. You should put the textures in this one.
 Additionally, create a file called 'init.lua'. This is the file that contains the source code of your mod.
 
 
