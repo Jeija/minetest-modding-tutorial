@@ -79,18 +79,22 @@ minetest.register_node("tutorial:decowood", {
 
 
 
-You also have to copy the file 'tutorial_decowood.png' from the folder with this Document to the textures folder mentioned in Chapter 0.
+You also have to copy the file 'tutorial_decowood.png' from the folder with this Document to the textures folder in the mod.
 
-When launching the game now, the mods are automatically loaded and compiled. This means when changing the code you simply have to 'Disconnect' and 'Start Game/Connect' again to try out the changes.
 
-Let's try out the first mod! Open the chat window ingame (press t) and enter "/giveme tutorial:decowood 99" (Without "" of course). This will add 99 blocks of the decorative wood to your inventory!
+
+Launch the game now, and notice that the mods are automatically loaded and compiled. This means when changing the code you simply have to 'Exit to Menu' and 'Start Game/Connect' again to try out the changes.
+
+Let's try out our first mod! Open the chat window ingame (press t) and enter "/giveme tutorial:decowood 99" (Without "" of course). This will add 99 blocks of the decorative wood to your inventory!
 
 --------------------------------------------------------------------------
 | The "give" privilage is required for the /giveme command to work       |
 | To grant yourself the "give" privilage, go to worlds/gamename/auth.txt |
+| And add ",give" after "shout,interact" to make it "shout,interact,give"|
 --------------------------------------------------------------------------
-
-Let's have a look at the source code:
+-----------------------------------------
+| Let's have a look at the source code: |
+-----------------------------------------
 The function minetest.register_node(name, table) is responsible for adding new blocks to the game (node=block, but also torches, rails, ...) . 
 It takes 2 Parameters: The name of the new block ("tutorial:decowood", the string before : MUST be the name of the mod folder) and a table with several properties of the block.
 In this case we use 2 properties:
