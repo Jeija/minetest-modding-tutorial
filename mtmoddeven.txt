@@ -60,19 +60,35 @@ Chapter 1: Your first mod!
 
 
 First of all let's program a mod that adds a special kind of wood that can only be used for decoration.
-For this, create a mod called 'tutorial' as described in Chapter 0.
+For this, create a new mod called 'tutorial' as described in Chapter 0.
+
 Now copy-paste this into 'init.lua':
+
+----------------------------------------------------
+|  Code                                            |
+----------------------------------------------------
 
 minetest.register_node("tutorial:decowood", {
 	tile_images = {"tutorial_decowood.png"},
 	material = minetest.digprop_constanttime(1),
 })
 
+----------------------------------------------------
+|  end of Code                                     |
+----------------------------------------------------
+
+
+
 You also have to copy the file 'tutorial_decowood.png' from the folder with this Document to the textures folder mentioned in Chapter 0.
 
 When launching the game now, the mods are automatically loaded and compiled. This means when changing the code you simply have to 'Disconnect' and 'Start Game/Connect' again to try out the changes.
 
 Let's try out the first mod! Open the chat window ingame (press t) and enter "/giveme tutorial:decowood 99" (Without "" of course). This will add 99 blocks of the decorative wood to your inventory!
+
+--------------------------------------------------------------------------
+| The "give" privilage is required for the /giveme command to work       |
+| To grant yourself the "give" privilage, go to worlds/gamename/auth.txt |
+--------------------------------------------------------------------------
 
 Let's have a look at the source code:
 The function minetest.register_node(name, table) is responsible for adding new blocks to the game (node=block, but also torches, rails, ...) . 
