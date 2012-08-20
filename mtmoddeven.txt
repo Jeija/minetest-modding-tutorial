@@ -18,6 +18,9 @@ Requirements:
 
 
 Basic Programming Knowledge, at best in Lua Language
+--- Don't have any knowledge? Use the following to learn:
+-------- codecademy.com -Learn the basics of programming (it is Javascript (not Java) but still helps)
+-------- Google lua tutorials
 
 
 
@@ -26,7 +29,11 @@ Chapter 0: Create a mod
 
 
 
-For creating a minetest mod you have to create a folder with the name of you mod in ~/.minetest/usermods/ (Linux Systemwide) / minetest/data/mods/ (Windows + Linux Run-in-place).
+For creating a minetest mod you have to create a new folder with the name of your mod in
+
+Linux:  ~/.minetest/usermods/ (Linux Systemwide) 
+
+Windows: /minetest/data/mods/ (Windows + Linux Run-in-place).
 
 In this folder, make another one called 'textures'. You should put the textures in this one.
 Additionally, create a file called 'init.lua'. This is the file that contains the source code of your mod.
@@ -66,7 +73,12 @@ You could also use minetest.digprop_woodlike(1.5) which makes destruction with a
 
 
 
+
 Chapter 2: Crafting!
+====================
+
+
+
 Crafting does not only play an important role in minecraft, also minetest uses different crafting recipes. Therefore it is important to know what crafting means and how to code it! 
 
 Crafting means creating Tools/Blocks/Other Objects. In minetest you have a 3x3 crafting area by default with a 1x1 output field. For example, a stone pickaxe can be made out of 2 Sticks and 3 Cobblestones:
@@ -109,6 +121,10 @@ For Windows & Linux run-in-place these mods are in minetest/data; for Linux syst
 
 
 Chapter 3: ABMs & Positioning
+=============================
+
+
+
 ABMs add actions to blocks. For instance, the tutorial-wood could become normal wood after a few seconds. Append this code to your init.lua:
 
 minetest.register_abm(
@@ -168,6 +184,15 @@ x and z are forward/backward; left/right values. Y is the up/down value. The pla
 The line pos.y=pos.y+1 manipulates the position to 1 Block above the dirt-with-grass node.
 
 There are some small other differences to our first abm. The interval is 1 in this case, but the chance (probability) is 100. Therefore the function is executed every second, but only in 1 of 100 cases. This makes your minetest garden slowly been overgrown by junglegrass.
+
+
+
+
+
+
+
+
+
 
 This is Jeija's modding tutorial Version 20120218.
 Check for new version on github.com/Jeija/minetest-modding-tutorial.
