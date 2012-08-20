@@ -1,13 +1,31 @@
 Minetest-c55: Modding in Lua
 
-Introduction:
-Minetest-c55 (Website: test.mine.bz) is a Minecraft clone, developed by the finnish programmer 'celeron55'.
-It has a so-called ScriptAPI, which is used in order program Mods.
+
+
+Introduction
+============
+
+
+Minetest-c55 (Website: minetest.net) is a Minecraft clone, developed by the Finnish programmer 'celeron55', and contributers.
+
+Minetest has a ScriptAPI (Applictation Programming Interface), which is used to program Mods (Modifications) for the game, extending its features and adding new items.
+
+This ScriptAPI is accessed using an easy-to-use programming langauge called Lua.
+
 
 Requirements:
+=============
+
+
 Basic Programming Knowledge, at best in Lua Language
 
+
+
 Chapter 0: Create a mod
+=======================
+
+
+
 For creating a minetest mod you have to create a folder with the name of you mod in ~/.minetest/usermods/ (Linux Systemwide) / minetest/data/mods/ (Windows + Linux Run-in-place).
 
 In this folder, make another one called 'textures'. You should put the textures in this one.
@@ -16,6 +34,9 @@ Additionally, create a file called 'init.lua'. This is the file that contains th
 
 
 Chapter 1: Your first mod!
+==========================
+
+
 First of all let's program a mod that adds a special kind of wood that can only be used for decoration.
 For this, create a mod called 'tutorial' as described in Chapter 0.
 Now copy-paste this into 'init.lua':
