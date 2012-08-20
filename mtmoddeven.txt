@@ -1,5 +1,9 @@
 Minetest-c55: Modding in Lua
 
+
+CONTENTS:
+=========
+
 Introduction
 
 --- Modding with Minetest
@@ -11,10 +15,12 @@ Chapter 1 - Modding Basics and Required understanding
 ---Mod packs and item names
 ---Creating a mod
 
+Tutorial 0ne: Decowood
+----------------------
 
-Chapter 2 - Tutorial
-
-Chapter 3 - ADMs and Positioning
+Chapter 2 - Defining a node
+Chapter 3 - Setting up a craft recipe
+Chapter 4 - ADMs and Positioning
 ---Adms and Positioning
 
 
@@ -105,12 +111,14 @@ Additionally, create a file called 'init.lua'. This is the file that contains th
 
 
 
-Chapter 1: Your first mod!
-==========================
+Chapter 2: [tutorial] Your first mod!
+=====================================
 
 
 We are going to make a mod that adds a special kind of wood that can only be used for decoration.
 For this, create a new mod called 'tutorial' using the method described in Chapter 0.
+
+--- Creating decowood ---
 
 Step 1) copy-paste this into 'init.lua':
 
@@ -159,11 +167,7 @@ material: This sets the time it takes to destroy the block. In this case (minete
 You could also use minetest.digprop_woodlike(1.5) which makes destruction with axes faster.
 
 
-
-
-Chapter 2: Crafting!
-====================
-
+---Crafting---
 
 
 Crafting does not only play an important role in minecraft, minetest also uses different crafting recipes. Therefore it is important to know what crafting means and how to code it! 
