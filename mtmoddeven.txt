@@ -24,8 +24,8 @@ Basic Programming Knowledge, at best in Lua Language
 
 
 
-Chapter 0: Create a mod
-=======================
+Chapter 0: Creating a mod
+===========================
 
 
 For creating a minetest mod you have to create a new folder with the name of your mod in the mod folder
@@ -59,10 +59,10 @@ Chapter 1: Your first mod!
 ==========================
 
 
-First of all let's program a mod that adds a special kind of wood that can only be used for decoration.
-For this, create a new mod called 'tutorial' as described in Chapter 0.
+We are going to make a mod that adds a special kind of wood that can only be used for decoration.
+For this, create a new mod called 'tutorial' using the method described in Chapter 0.
 
-Now copy-paste this into 'init.lua':
+Step 1) copy-paste this into 'init.lua':
 
 ----------------------------------------------------
 |  Code                                            |
@@ -79,9 +79,9 @@ minetest.register_node("tutorial:decowood", {
 
 
 
-You also have to copy the file 'tutorial_decowood.png' from the folder with this Document to the textures folder in the mod.
+Step 2) Copy the file 'tutorial_decowood.png' supplied with this Document to the textures folder in the mod.
 
-Launch the game now, and notice that the mods are automatically loaded and compiled. This means when changing the code you simply have to 'Exit to Menu' and 'Start Game/Connect' again to try out the changes.
+Try it) Launch the game now, and notice that the mods are automatically loaded and compiled. This means when changing the code you simply have to 'Exit to Menu' and 'Start Game/Connect' again to try out the changes.
 
 Let's try out our first mod! Open the chat window ingame (press t) and enter "/giveme tutorial:decowood 99" (Without "" of course). This will add 99 blocks of the decorative wood to your inventory!
 
@@ -116,17 +116,26 @@ Chapter 2: Crafting!
 
 
 
-Crafting does not only play an important role in minecraft, also minetest uses different crafting recipes. Therefore it is important to know what crafting means and how to code it! 
+Crafting does not only play an important role in minecraft, minetest also uses different crafting recipes. Therefore it is important to know what crafting means and how to code it! 
 
-Crafting means creating Tools/Blocks/Other Objects. In minetest you have a 3x3 crafting area by default with a 1x1 output field. For example, a stone pickaxe can be made out of 2 Sticks and 3 Cobblestones:
+Crafting means to creating Tools, Blocks and Other Objects.
+In minetest you have a 3x3 crafting area by default with a 1x1 output field.
+
+For example, a stone pickaxe can be made out of 2 Sticks and 3 Cobblestones:
+
 C C C
   S
   S
+
 S=Stick C=Cobblestone; Looks quite logic, doesn't it?
 
 So let's make a crafting recipe for the decorative wood of Chapter 0!
 
 Just append this to your init.lua:
+
+----------------------------------------------------
+|  Code                                            |
+----------------------------------------------------
 
 minetest.register_craft({
 	output = '"tutorial:decowood" 2',
@@ -136,6 +145,11 @@ minetest.register_craft({
 		{'', '', ''},
 	}
 })
+
+----------------------------------------------------
+| End of Code                                      |
+----------------------------------------------------
+
 
 The function minetest.register_craft() registers a crafting process, it defines the recipe for something. 
 
