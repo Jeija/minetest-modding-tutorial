@@ -231,12 +231,16 @@ for Linux systemwide installation, these mods are in /usr/share/minetest/games/m
 
 
 
-Chapter 3: ABMs & Positioning
+Chapter 4: ABMs & Positioning
 =============================
 
 
 
 ABMs add actions to blocks. For instance, the tutorial-wood could become normal wood after a few seconds. Append this code to your init.lua:
+
+----------------------------------------------------
+|  Code                                            |
+----------------------------------------------------
 
 minetest.register_abm(
 	{nodenames = {"tutorial:decowood"},
@@ -247,7 +251,11 @@ minetest.register_abm(
 	end,
 })
 
-Try it out! It's really annoying to see all your decowood creations destroyed after 30 seconds, they simple become normal wood.
+----------------------------------------------------
+|  Code                                            |
+----------------------------------------------------
+
+Try it out! It's really annoying to see all your decowood creations destroyed after 30 seconds, they simply become normal wood.
 
 But how does this work?
 The function minetest.register_abm registers an action for each block of the same type.
@@ -286,6 +294,10 @@ minetest.register_abm(
 	end,
 })
 
+----------------------------------------------------
+|  end of Code                                     |
+----------------------------------------------------
+
 You should already know everything else but the line pos.y=pos.y+1.
 What is that for? 
 
@@ -309,7 +321,7 @@ There are some small other differences to our first abm. The interval is 1 in th
 Credits and Afterword
 =====================
 
-This is Jeija's modding tutorial Version 20120218, rewriten and formated for english by "Rubenwardy"
+This is Jeija's modding tutorial Version 20120218, Rewriten and formated for english by "Rubenwardy"
 
 Check for new version on github.com/Jeija/minetest-modding-tutorial.
 
