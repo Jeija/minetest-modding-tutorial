@@ -47,33 +47,52 @@ Basic Programming Knowledge, at best in Lua Language
 
 Chapter 1 - Modding basics
 ==========================
----Types of objects in Minetest---
 
-NODE:
-SPRITE
+
+---Types of objects in Minetest---
+Here are the three types of items you can define in Minetest:
+
+Node (register_node): A Block from the world
+Tool (register_tool): A tool/weapon that can dig and damage things according to tool_capabilities
+Craftitem (register_craftitem): A miscellaneous item
+
+The type of the object is important as it plays a part in the properties of that object.
+
+
+
 
 --- Mod packs and item names ---
 
-In minetest, each item, block, and node
+In minetest, each node, tool and item need a unique name to identify it in the api.
+
+The names format is like this:
+
+------------------------
+| modpackname:itemname |
+------------------------
+
+so for example, default:dirt is the unique name for dirt.
+
+
 
 
 --- Creating a mod ---
 
-For creating a minetest mod you have to create a new folder with the name of your mod in the mod folder
+To create a minetest mod, you have to create a new folder with the name of your mod in the mod folder
 
 -----------------------------------------------------------------
 | Linux Systemwide:  ~/.minetest*/usermods/                     | 
 |                                                               |
 | Windows + Linux Run-in-place: minetest*/mods/minetest         |
 |---------------------------------------------------------------|
-| * The place where minetest was installed/extracted to.        |
+| minetest* The place where minetest was installed/extracted to.|
 -----------------------------------------------------------------
 
 
 In the new folder, create a file called 'init.lua'. This is the file that will contain the source code for the mod.
 
 ----------------------------------------------------------
-|  To do this on Window, use WordPad. Click file>save as |
+| To do this on Windows, use WordPad. Click file>save as |
 | dropdown to all files, and type 'init.lua' in the file |
 | name box.                                              |
 | Or you can use a lua compatible editor such            | 
