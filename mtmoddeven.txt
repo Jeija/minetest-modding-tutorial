@@ -6,7 +6,7 @@ Introduction
 ============
 
 
-Minetest-c55 (Website: minetest.net) is a Minecraft clone, developed by the Finnish programmer 'celeron55', and contributers.
+Minetest-c55 (Website: minetest.net) is a Minecraft clone, developed by the Finnish programmer 'celeron55' and contributers.
 
 Minetest has a ScriptAPI (Applictation Programming Interface), which is used to program Mods (Modifications) for the game, extending its features and adding new items.
 
@@ -27,7 +27,12 @@ Basic Programming Knowledge, at best in Lua Language
 Chapter 0: Create a mod
 =======================
 
-
+----------------------------------------------------------
+|  To do this on Window, use WordPad. Click file>save as |
+| dropdown to all files, and type 'init.lua' in the file |
+| name box. Or you can use a lua compatible editor such  |
+| as 'context'  WARNING: DONT USE NOTEPAD                |
+---------------------------------------------------------
 
 For creating a minetest mod you have to create a new folder with the name of your mod in
 
@@ -35,7 +40,9 @@ Linux:  ~/.minetest/usermods/ (Linux Systemwide)
 
 Windows: /minetest/data/mods/ (Windows + Linux Run-in-place).
 
-In this folder, make another one called 'textures'. You should put the textures in this one.
+In the new folder, create a file called 'init.lua'.
+
+make another one called 'textures'. You should put the textures in this one.
 Additionally, create a file called 'init.lua'. This is the file that contains the source code of your mod.
 
 
