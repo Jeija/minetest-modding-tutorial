@@ -1,0 +1,335 @@
+<html>
+<head>
+<title>Beginners Guide to Minetest Modding</title>
+
+<link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+
+<table width="100%" bgcolor="#FFFFBB">
+<tr>
+<td width="80"><img src="1.png" width=80 alt="Minetest Logo" /></td>
+<th><center><h1>Minetest-c55: Modding in Lua</h1><center></th>
+<td width="100"><a href="download.zip">Download Resources</a></td>
+</tr>
+</table>
+
+<h1>CONTENTS</h1>
+
+<h2>The Basics</h2>
+<ul>
+<li><a href="#intro">Introduction</a></li>
+<li><a href="#chap1">Chapter 1</a> - Modding Basics and Required understanding</li>
+</ul>
+
+<h2>Part One: Declaring and Crafting Nodes</h2>
+<ul>
+<li><a href="#chap2">Chapter 2</a> - Defining a node</li>
+<li><a href="#chap3">Chapter 3</a> - Setting up a craft recipe</li>
+</ul>
+
+<h2>Part Two: ABMs</h2>
+<ul>
+<li><a href="#chap4">Chapter 4</a> - ADMs</li>
+<li><a href="#chap5">Chapter 5</a> - The Position Variable</li>
+</ul>
+
+
+<h1>The Basics</h1>
+
+
+<h2><a name="intro">Introduction</a></h2>
+<table>
+<tr>
+<td>
+<img src="2.png" height=200 alt="Screenshot" />
+</td>
+<td>
+<p><a href="http://minetest.net">Minetest-c55</a> is a Minecraft clone, developed by the Finnish programmer 'celeron55' and contributers.</p>
+
+<p>Minetest has a ScriptAPI (Applictation Programming Interface), which is used to program Mods (Modifications) for the game, extending its features and adding new items.</p>
+
+<p>This ScriptAPI is accessed using an easy-to-use programming langauge called Lua.</p>
+
+
+<h3>Requirements</h3>
+
+<ul>
+<li>Basic Programming Knowledge, ideally in the Lua Language (<a href="#learntocode">learn</a>)</li>
+</ul>
+</td>
+</tr>
+</table>
+
+
+
+<h2><a name="chap1">Chapter 1 - Modding basics</a></h2>
+
+<h3>Types of objects in Minetest</h3>
+Here are the three types of items you can define in Minetest:
+<ul>
+<li>Node (register_node): A Block from the world</li>
+<li>Tool (register_tool): A tool/weapon that can dig and damage things according to tool_capabilities</li>
+<li>Craftitem (register_craftitem): A miscellaneous item</li>
+</ul>
+The type of the object is important as it plays a part in the properties of that object.
+
+
+<h3>Mod packs and item names</h3>
+
+<p>In minetest, each node, tool and item needs a unique name to identify it in the api.<br />
+The name's format is like this:</p>
+
+<p><code>
+modname:itemname
+</code></p>
+
+In this case, the mod is called 'modname' (name is preset by the folder name)
+and the block is called 'itemname', so it's tutorial:decowood.<br />
+
+so for example, default:dirt is the unique name for dirt.
+
+<h3>Creating a mod</h3>
+
+<div id="step">1) Create a new folder with the name of your mod in the mod folder</div>
+
+<p>
+<table>
+<tr bgcolor="#FCFCFC"><td>
+Linux Systemwide:  <i>~/.minetest*/usermods/</i><br /><br />
+Windows + Linux Run-in-place: <i>minetest*/mods/minetest</i>
+</td></tr>
+
+<tr bgcolor="#F0F0F0"><td>
+minetest* The place where minetest was installed/extracted to.
+</td></tr>
+</table>
+</p>
+
+<div id="step">2) In the new folder, create a file called 'init.lua'. This is the file that will contain the source code for the mod.</div>
+
+<p><table bgcolor="#FFFFCC">
+<tr><td><center>
+To do this on Windows, use WordPad.<br />Click file>save as, dropdown to all files, and type 'init.lua' in the file name box.<br />
+<br />Or you can use a lua compatible editor such as 'Context'<br /><br />
+</center>
+</td></tr>
+<tr><th>
+<font color="#FF0000">WARNING: DO NOT USE NOTEPAD</font>
+</th></tr>
+</table></p>
+
+<div id="step">3) Next make another sub folder called 'textures'. This is where you will place the textures</div>
+
+
+<h1>Tutorial 1: Decowood</h1>
+<h2><a name="chap2">Chapter 2: [tutorial] Your first mod!</a></h2>
+
+We are going to make a mod that adds a special kind of wood that can only be used for decoration.<br />
+For this, create a new mod called 'tutorial' using the method described in Chapter 0.
+
+<h3>Registering the decowood node</h3>
+
+<div id="step">1) copy-paste this into 'init.lua':</div>
+
+<p><code><pre>
+minetest.register_node("tutorial:decowood", {
+	tile_images = {"tutorial_decowood.png"},
+	material = minetest.digprop_constanttime(1),
+})
+</pre></code></p>
+
+<div id="step">2) Copy the file 'tutorial_decowood.png' supplied with this Document to the textures folder in the mod.</div>
+<br />
+Try it) Launch the game now, and notice that the mods are automatically loaded and compiled. This means when changing the code you simply have to 'Exit to Menu' and 'Start Game/Connect' again to try out the changes.
+<br />
+Let's try out our first mod! Open the chat window ingame (press t) and enter "/giveme tutorial:decowood 99" (Without "" of course). This will add 99 blocks of the decorative wood to your inventory!
+
+<p><table bgcolor="#FFFFCC">
+<tr><td><center>
+The "give" privilage is required for the /giveme command to work<br /><br />
+To grant yourself the "give" privilage, go to worlds/gamename/auth.txt and open it.<Br />
+Add ",give" after "shout,interact" to make it "shout,interact,give"<br />
+</center></td></tr>
+</table></p>
+
+<h3>Let's have a look at the source code:</h3>
+
+<p>The function minetest.register_node(name, table) is responsible for adding new blocks to the game (node=block, but also torches, rails, ...)<br />
+It takes 2 Parameters: The name of the new block ("tutorial:decowood", the string before : MUST be the name of the mod folder) and a table with several properties of the block.</p>
+
+<p>In this case we use 2 properties:</p>
+<ul>
+<li>tile_images: Sets the texture of the block; You can use only 1 texture or multiple textures,
+seperated by commas {"tex1.png", "tex2.png", ...}. The game checks for the texture files in ALL textures folders of the game.</li>
+
+<li>material: This sets the time it takes to destroy the block. In this case (minetest.digprop_constanttime(1)) it is a constant time of 1 second.</li>
+</ul>
+You could also use minetest.digprop_woodlike(1.5) which makes destruction with axes faster.
+
+
+<h2><a name="chap3">Chapter 3 - Crafting</a></h2>
+
+<h3>What is crafting?</h3>
+
+<p>Crafting does not only play an important role in Minecraft, Minetest also uses different crafting recipes. Therefore it is important to know what crafting means and how to code it!<br />
+
+<p>Crafting means to creating Tools, Blocks and Other Objects.<br />
+In minetest you have a 3x3 crafting area by default with a 1x1 output field.</p>
+
+<p>For example, a stone pickaxe can be made out of 2 Sticks and 3 Cobblestones:<br />
+<p><img src="3.png" alt="The craft recipe for a stone pick-axe" /></p>
+<br />
+S=Stick C=Cobblestone; Looks quite logic, doesn't it?
+</p>
+
+<h3>Lets make a recipe for out decowood mod</h3>
+
+So let's make a crafting recipe for the decorative wood of Chapter 0!<br />
+
+<div id="step">Just append (add) this to your init.lua file:</div>
+
+<p><code><pre>
+minetest.register_craft({
+	output = '"tutorial:decowood" 2',
+	recipe = {
+		{'default:wood', 'default:wood', ''},
+		{'default:wood', 'default:wood', ''},
+		{'', '', ''},
+	}
+})
+</pre></code></p>
+
+The function minetest.register_craft() registers a crafting process, it defines the recipe for something.<br />
+<p>
+It takes 1 parameter which is a table that contains 2 properties: (and an optional third)<br />
+<ol>
+<li>output - which sets the outcome of the crafting process and recipe which is the actual recipe for the output.</li>
+<li>recipe must be a table with other tables inside.<br />
+Every of the 3 tables defines another row of the crafting field. Every row contains 3 columns.<br />
+In this case The crafting recipe is like this:<br /><p><img src="4.png" alt="The craft recipe for our decowood" /></p></li>
+<li>[optional] type - if you want to make it a furnace craft add type="cook" before the "output" property</li>
+</ol>
+</p>
+
+Easy, isn't it? You may also try out some other combinations!<br />
+
+<p>So what is 'default'? 'default' is the most important "mod" of minetest, in fact minetest itself is more like just a game engine,
+all the contents, materials, and other stuff are in several mods, like 'default' (standard tools/blocks), 'bucket' (Buckets: Lava/Water),...</p>
+
+If you want to find out more about these mods and maybe use features they contain, just have a look in their init.lua!</br />
+
+<p><table bgcolor="#FFFFCC">
+<tr><td><center>
+For Windows & Linux run-in-place these mods are in <i>minetest/games/minetest_game/</i><br /><br />
+For Linux systemwide installation, these mods are in <i>/usr/share/minetest/games/minetest_game</i>
+</center></td></tr>
+</table><p>
+
+
+<h2><a name="chap4">Chapter 4: ABMs</a></h2>
+
+ABMs add actions to blocks. For instance, the tutorial-wood could become normal wood after a few seconds.<br />
+
+<div id="step">Append this code to your init.lua:</div>
+
+<p><code><pre>
+minetest.register_abm(
+	{nodenames = {"tutorial:decowood"},
+	interval = 30,
+	chance = 1,
+	action = function(pos)
+		minetest.env:add_node(pos, {name="default:wood"})
+	end,
+})
+</pre></code></p>
+
+Try it out! It's really annoying to see all your decowood creations destroyed after 30 seconds, they simply become normal wood.<br />
+
+<p>But how does this work?<br />
+The function minetest.register_abm registers an action for each block of the same type.</p>
+
+<p>nodenames = {"tutorial:decowood'} means that the action is processed for each decowood block.</p>
+
+<p>You could also try "default:stone" instead of that to turn all stone blocks into wood.</p>
+
+<p>interval = 30 means that the action is performed every 30 seconds. It starts counting at the beginning of the game. After 30 seconds all actions are processed, it doesn't matter when the block was placed.</p>
+
+<p>This is not a per-block timer!</p>
+
+<p>chance = 1 means that the probability of the action is 1:1, it happens in every case.<br />
+A higher value means that it's less probable.</p>
+
+<p>action = function(pos) is the function that is actually performed.</p>
+
+<p>It contains the command minetest.env:add_node. More about it in the next section<br />
+
+<h3>minetest.env:add_node</h3>
+<p>This is a function that is used to add/replace a node the given place</p>
+
+<p>minetest.env:add_node has 2 parameters.
+<uL>
+<li>The position parameter (more information later)<br />
+<li>A table which defines the properties of the block, e.g. the name, the direction it faces, ...<br /><br />
+</ul>
+In this case the name is enough to define what block you can see.
+</p>
+
+So let's assume we want to create a mod that makes junglegrass grow above every dirt-with-grass block. This should be a slow process, one dirt-with-grass block after the other should be grown over.
+This is what we do:<br />
+
+<p><code><pre>
+minetest.register_abm(
+	{nodenames = {"default:dirt_with_grass"},
+	interval = 1,
+	chance = 100,
+	action = function(pos)
+		pos.y=pos.y+1
+		minetest.env:add_node(pos, {name="default:junglegrass"})
+	end,
+})
+</pre></code></p>
+
+<p>You should already know everything else but the line "pos.y=pos.y+1".</p>
+
+<h2><a name="chap5">Chapter 5: The Position Variable</a></h3>
+
+To understand the position variable, you need to know that in 3d space, positions are determind by three co-ordinates: x,y,z<br />
+
+The player usually spawns near 0,0,0.<br />
+
+<p>The line pos.y=pos.y+1 manipulates the position to 1 Block above the dirt-with-grass node.</p>
+
+<p>There are some small other differences to our first abm.<br />
+The interval is 1 in this case, but the chance (probability) is 100.Therefore the function is executed every second, but only in 1 of 100 cases.
+<br />This makes your minetest garden slowly been overgrown by junglegrass.</div>
+
+
+<h1>Apendix</h1>
+<h2><a name="learntocode">Learn to code</a></h2>
+Don't have any knowledge? Use the following to learn:
+<ul>
+<li><a href="http://codecademy.com">Codecademy</a> -Learn the basics of programming (it is Javascript (not Java) but still helps)</li>
+<li>Internet Search (google,yahoo) lua tutorials</li>
+</ul>
+
+
+<h2>Credits and Afterword</h2>
+
+<p>This is Jeija's modding tutorial Version 20120218,
+<br />Updated, Rewriten and Reformated for english by "Rubenwardy".<br />Html coded by Rubenwardy.</p>
+
+<p>Check for new version at <a href="www.github.com/Jeija/minetest-modding-tutorial">GitHub</a>.</p>
+
+<p>For more advanced (and often cryptic) information about minetest modding have a look at this reference:
+<a href="https://github.com/celeron55/minetest/blob/master/doc/lua_api.txt">Lua_api.txt</a></p>
+
+<p>For generic modding questions or specific questions, feel free to ask in the minetest forum:
+minetest.net/forum</p>
+
+<p>For questions about this tutorial, ask in the thread for this tutorial:
+minetest.net/forum/...</p>
+
+<p>Thanks you for reading! Good luck in creating your amazing dream mod!</p>
+</body>
+</html>
