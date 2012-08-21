@@ -30,8 +30,14 @@
 
 <h2>Part Two: ABMs</h2>
 <ul>
-<li><a href="#chap4">Chapter 4</a> - ADMs</li>
-<li><a href="#chap5">Chapter 5</a> - The Position Variable</li>
+<li><a href="#chap4">Chapter 4</a> - ABM Basics and the Position Variable</li>
+<li>more comming soon</li>
+</ul>
+
+<h2>Part Three: Lua Files and Debuging</h2>
+<ul>
+<li><a href="#include">Chapter #</a> - Including LUA Files</li>
+<li><a href="#chap_print">Chapter #</a> - Exceptions, Bugs, and the print function</li>
 </ul>
 
 
@@ -122,8 +128,8 @@ To do this on Windows, use WordPad.<br />Click file>save as, dropdown to all fil
 <div id="step">3) Next make another sub folder called 'textures'. This is where you will place the textures</div>
 
 
-<h1>Tutorial 1: Decowood</h1>
-<h2><a name="chap2">Chapter 2: [tutorial] Your first mod!</a></h2>
+<h1>Part One: Declaring and Crafting Nodes</h1>
+<h2><a name="chap2">Chapter 2: Defining a node</a></h2>
 
 We are going to make a mod that adds a special kind of wood that can only be used for decoration.<br />
 For this, create a new mod called 'tutorial' using the method described in Chapter 0.
@@ -213,8 +219,8 @@ In this case The crafting recipe is like this:<br /><p><img src="4.png" alt="The
 </p>
 
 Easy, isn't it? You may also try out some other combinations!<br />
-
-<p>So what is 'default'? 'default' is the most important "mod" of minetest, in fact minetest itself is more like just a game engine,
+<h3>What is the mod "default"?</h3>
+<p>So what is default? 'default' is the most important "mod" of minetest, in fact minetest itself is more like just a game engine,
 all the contents, materials, and other stuff are in several mods, like 'default' (standard tools/blocks), 'bucket' (Buckets: Lava/Water),...</p>
 
 If you want to find out more about these mods and maybe use features they contain, just have a look in their init.lua!</br />
@@ -292,7 +298,7 @@ minetest.register_abm(
 
 <p>You should already know everything else but the line "pos.y=pos.y+1".</p>
 
-<h2><a name="chap5">Chapter 5: The Position Variable</a></h3>
+<h3>The Position Variable</h3>
 
 To understand the position variable, you need to know that in 3d space, positions are determind by three co-ordinates: x,y,z<br />
 
@@ -304,6 +310,110 @@ The player usually spawns near 0,0,0.<br />
 The interval is 1 in this case, but the chance (probability) is 100.Therefore the function is executed every second, but only in 1 of 100 cases.
 <br />This makes your minetest garden slowly been overgrown by junglegrass.</div>
 
+<h1>Part Three - Lua Files and Debugging</h1>
+<h2><a name="include">Chapter # - Including Files</a></h2>
+<h3>The dofile function</h3>
+Sometimes you have so much code, a single init.lua file is too hard to maintain.
+
+<p>
+But there is a solution! <code>dofile(minetest.get_modpath("chess").."/anotherfile.lua")</code> will tell Minetest to look for anotherfile.lua in the same folder as init.lua, and add load its contents.
+</p>
+<h2><a name="chap_print">Chapter # - Debugging</a></h2>
+<h3>Types of errors and Bugs</h3>
+As with most programming, when you develop you tend to get what are called "bugs" and errors, which are basically human mistakes.<br />
+There are three types of bugs/errors
+<p><ul>
+<li>Compile Time Errors - These occur when Minetest is loading the mods, and are caused by syntax errors (a simple mistake like leaving a "}" out)</li>
+<li>Runtime Errors - These occur while the game is being played, and often crash the game. (eg: mod "modname:blockname" is not defined)</li>
+<li>Runtime Bugs - These bugs cause the mod not to work as planned</li>
+</ul></p>
+
+<h3>Avoiding Syntax Mistakes</h3>
+To help avoid syntax mistakes, make sure your code is easy to read.
+
+<p>
+<table bgcolor="#FFFFCC">
+<tr><td>
+Which one of these codes is easier to read?
+<p>
+<code><pre>
+minetest.register_abm(
+	{nodenames = {"default:dirt_with_grass"},
+	interval = 1,
+	chance = 100,
+	action = function(pos)
+		pos.y=pos.y+1
+		minetest.env:add_node(pos, {name="default:junglegrass"})
+	end,
+})
+</pre></code>
+</p>
+<p>
+<code><pre>
+minetest.register_abm({nodenames = {"default:dirt_with_grass"},interval = 1,chance = 100,
+action = function(pos)
+pos.y=pos.y+1
+minetest.env:add_node(pos, {name="default:junglegrass"})
+end,
+})
+</pre></code>
+</p>
+</td></tr>
+</table>
+</p>
+Also you should check your work and put comments in
+<p>
+<code>
+pos.y=pos.y+1 --This line increases the position's y axis by 1
+</code>
+</p>
+
+<h3>Avoiding Runtime Mistakes</h3>
+
+<table bgcolor="#FFFFCC">
+<tr><td><p>
+The Console is the black window with writing in that appears when Minetest runs.</p>
+</td></tr>
+</table>
+
+
+<p>LUA has a function called "print" and it displays a message to the console.</p>
+
+<p>
+<code>
+print("message to send")
+</code>
+</p>
+
+You should the print function so you know how far Minetest gets in a program.<br />
+<p>
+<table bgcolor="#FFFFCC">
+<tr><th>Why use <u>print</u></th></tr><tr><td>
+For example, you have a mistake in the code:
+
+<p>
+<code>
+<pre>
+check_something(1)
+
+function check_something(value)
+
+if value=0 then
+   print("it ends up here")
+else
+    print("but you are certern that value=1")
+end
+
+end
+</pre>
+</code>
+</p>
+
+The aboves Runtime bug was caused by a single "=" instead of double "==", and so instead of checking if value was equal to 0, it set it to 0 resulting in true<br />
+And so having print helps point out your mistake.
+</td></tr>
+</table>
+</p>
 
 <h1>Apendix</h1>
 <h2><a name="learntocode">Learn to code</a></h2>
