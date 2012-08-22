@@ -141,7 +141,7 @@ For this, create a new mod called 'tutorial' using the method described in Chapt
 <p><code><pre>
 minetest.register_node("tutorial:decowood", {
 	tile_images = {"tutorial_decowood.png"},
-	groups={level=1},
+	groups={choppy},
 })
 </pre></code></p>
 
@@ -169,9 +169,9 @@ It takes 2 Parameters: The name of the new block ("tutorial:decowood", the strin
 <li>tile_images: Sets the texture of the block; You can use only 1 texture or multiple textures,
 seperated by commas {"tex1.png", "tex2.png", ...}. The game checks for the texture files in ALL textures folders of the game.</li>
 
-<li>group: This sets the time it takes to destroy the block. In this case (level=1,) it is a constant time of 1 second.</li>
+<li>group: This sets the time it takes to destroy the block. <a href="http://minetest.net/wiki/doku.php?id=roadmap:digging_time_groups">See more</a></li>
 </ul>
-You could also use minetest.digprop_woodlike(1.5) which makes destruction with axes faster.
+<!--You could also use minetest.digprop_woodlike(1.5) which makes destruction with axes faster.-->
 
 
 <h2><a name="chap3">Chapter 3 - Crafting</a></h2>
