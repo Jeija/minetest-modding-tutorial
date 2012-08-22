@@ -51,7 +51,7 @@
 <img src="2.png" height=200 alt="Screenshot" />
 </td>
 <td>
-<p><a href="http://minetest.net">Minetest-c55</a> is a Minecraft clone, developed by the Finnish programmer 'celeron55' and contributers.</p>
+<p><a href="http://minetest.net">Minetest-c55</a> is a Minecraft clone, developed by the Finnish programmer 'celeron55' and contributors.</p>
 
 <p>Minetest has a ScriptAPI (Applictation Programming Interface), which is used to program Mods (Modifications) for the game, extending its features and adding new items.</p>
 
@@ -141,7 +141,7 @@ For this, create a new mod called 'tutorial' using the method described in Chapt
 <p><code><pre>
 minetest.register_node("tutorial:decowood", {
 	tile_images = {"tutorial_decowood.png"},
-	material = minetest.digprop_constanttime(1),
+	groups={level=1},
 })
 </pre></code></p>
 
@@ -169,7 +169,7 @@ It takes 2 Parameters: The name of the new block ("tutorial:decowood", the strin
 <li>tile_images: Sets the texture of the block; You can use only 1 texture or multiple textures,
 seperated by commas {"tex1.png", "tex2.png", ...}. The game checks for the texture files in ALL textures folders of the game.</li>
 
-<li>material: This sets the time it takes to destroy the block. In this case (minetest.digprop_constanttime(1)) it is a constant time of 1 second.</li>
+<li>group: This sets the time it takes to destroy the block. In this case (level=1,) it is a constant time of 1 second.</li>
 </ul>
 You could also use minetest.digprop_woodlike(1.5) which makes destruction with axes faster.
 
