@@ -30,7 +30,7 @@ Introduction
 ============
 
 
-Minetest-c55 (Website: minetest.net) is a Minecraft clone, developed by the Finnish programmer 'celeron55' and contributers.
+Minetest-c55 (Website: minetest.net) is a Minecraft clone, developed by the Finnish programmer 'celeron55' and contributors.
 
 Minetest has a ScriptAPI (Applictation Programming Interface), which is used to program Mods (Modifications) for the game, extending its features and adding new items.
 
@@ -128,7 +128,7 @@ Step 1) copy-paste this into 'init.lua':
 
 minetest.register_node("tutorial:decowood", {
 	tile_images = {"tutorial_decowood.png"},
-	material = minetest.digprop_constanttime(1),
+	groups={level=1},
 })
 
 ----------------------------------------------------
