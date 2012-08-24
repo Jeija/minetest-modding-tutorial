@@ -1,12 +1,36 @@
 Minetest-c55: Modding in Lua
 
 
+CONTENTS:
+=========
+
+Introduction
+
+--- Modding with Minetest
+--- Requirements
+
+
+
+Chapter 1 - Modding Basics and Required understanding
+---Mod packs and item names
+---Creating a mod
+
+Tutorial 0ne: Decowood
+----------------------
+
+Chapter 2 - Defining a node
+Chapter 3 - Setting up a craft recipe
+Chapter 4 - ADMs and Positioning
+---Adms and Positioning
+
+
+
 
 Introduction
 ============
 
 
-Minetest-c55 (Website: minetest.net) is a Minecraft clone, developed by the Finnish programmer 'celeron55' and contributers.
+Minetest-c55 (Website: minetest.net) is a Minecraft clone, developed by the Finnish programmer 'celeron55' and contributors.
 
 Minetest has a ScriptAPI (Applictation Programming Interface), which is used to program Mods (Modifications) for the game, extending its features and adding new items.
 
@@ -24,25 +48,57 @@ Basic Programming Knowledge, at best in Lua Language
 
 
 
-Chapter 0: Creating a mod
-===========================
 
 
-For creating a minetest mod you have to create a new folder with the name of your mod in the mod folder
+
+Chapter 1 - Modding basics
+==========================
+
+
+---Types of objects in Minetest---
+Here are the three types of items you can define in Minetest:
+
+Node (register_node): A Block from the world
+Tool (register_tool): A tool/weapon that can dig and damage things according to tool_capabilities
+Craftitem (register_craftitem): A miscellaneous item
+
+The type of the object is important as it plays a part in the properties of that object.
+
+
+
+
+--- Mod packs and item names ---
+
+In minetest, each node, tool and item need a unique name to identify it in the api.
+
+The names format is like this:
+
+------------------------
+| modpackname:itemname |
+------------------------
+
+so for example, default:dirt is the unique name for dirt.
+
+
+
+
+--- Creating a mod ---
+
+To create a minetest mod, you have to create a new folder with the name of your mod in the mod folder
 
 -----------------------------------------------------------------
 | Linux Systemwide:  ~/.minetest*/usermods/                     | 
 |                                                               |
 | Windows + Linux Run-in-place: minetest*/mods/minetest         |
 |---------------------------------------------------------------|
-| * The place where minetest was installed/extracted to.        |
+| minetest* The place where minetest was installed/extracted to.|
 -----------------------------------------------------------------
 
 
 In the new folder, create a file called 'init.lua'. This is the file that will contain the source code for the mod.
 
 ----------------------------------------------------------
-|  To do this on Window, use WordPad. Click file>save as |
+| To do this on Windows, use WordPad. Click file>save as |
 | dropdown to all files, and type 'init.lua' in the file |
 | name box.                                              |
 | Or you can use a lua compatible editor such            | 
@@ -55,12 +111,14 @@ Additionally, create a file called 'init.lua'. This is the file that contains th
 
 
 
-Chapter 1: Your first mod!
-==========================
+Chapter 2: [tutorial] Your first mod!
+=====================================
 
 
 We are going to make a mod that adds a special kind of wood that can only be used for decoration.
 For this, create a new mod called 'tutorial' using the method described in Chapter 0.
+
+--- Creating decowood ---
 
 Step 1) copy-paste this into 'init.lua':
 
@@ -70,7 +128,7 @@ Step 1) copy-paste this into 'init.lua':
 
 minetest.register_node("tutorial:decowood", {
 	tile_images = {"tutorial_decowood.png"},
-	material = minetest.digprop_constanttime(1),
+	groups={level=1},
 })
 
 ----------------------------------------------------
@@ -109,11 +167,8 @@ material: This sets the time it takes to destroy the block. In this case (minete
 You could also use minetest.digprop_woodlike(1.5) which makes destruction with axes faster.
 
 
-
-
-Chapter 2: Crafting!
+Chapter 3 - Crafting
 ====================
-
 
 
 Crafting does not only play an important role in minecraft, minetest also uses different crafting recipes. Therefore it is important to know what crafting means and how to code it! 
@@ -176,12 +231,16 @@ for Linux systemwide installation, these mods are in /usr/share/minetest/games/m
 
 
 
-Chapter 3: ABMs & Positioning
+Chapter 4: ABMs & Positioning
 =============================
 
 
 
 ABMs add actions to blocks. For instance, the tutorial-wood could become normal wood after a few seconds. Append this code to your init.lua:
+
+----------------------------------------------------
+|  Code                                            |
+----------------------------------------------------
 
 minetest.register_abm(
 	{nodenames = {"tutorial:decowood"},
@@ -192,7 +251,11 @@ minetest.register_abm(
 	end,
 })
 
-Try it out! It's really annoying to see all your decowood creations destroyed after 30 seconds, they simple become normal wood.
+----------------------------------------------------
+|  end of Code                                     |
+----------------------------------------------------
+
+Try it out! It's really annoying to see all your decowood creations destroyed after 30 seconds, they simply become normal wood.
 
 But how does this work?
 The function minetest.register_abm registers an action for each block of the same type.
@@ -218,10 +281,10 @@ In this case the name is enough to define what block you can see.
 So let's assume we want to create a mod that makes junglegrass grow above every dirt-with-grass block. This should be a slow process, one dirt-with-grass block after the other should be grown over.
 This is what we do:
 
-minetest.regis----------------------------------------------------
+----------------------------------------------------
 |  Code                                            |
 ----------------------------------------------------
-ter_abm(
+minetest.register_abm(
 	{nodenames = {"default:dirt_with_grass"},
 	interval = 1,
 	chance = 100,
@@ -230,6 +293,10 @@ ter_abm(
 		minetest.env:add_node(pos, {name="default:junglegrass"})
 	end,
 })
+
+----------------------------------------------------
+|  end of Code                                     |
+----------------------------------------------------
 
 You should already know everything else but the line pos.y=pos.y+1.
 What is that for? 
@@ -254,7 +321,7 @@ There are some small other differences to our first abm. The interval is 1 in th
 Credits and Afterword
 =====================
 
-This is Jeija's modding tutorial Version 20120218, rewriten and formated for english by "Rubenwardy"
+This is Jeija's modding tutorial Version 20120218, Rewriten and formated for english by "Rubenwardy"
 
 Check for new version on github.com/Jeija/minetest-modding-tutorial.
 
