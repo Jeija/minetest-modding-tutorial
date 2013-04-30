@@ -1,0 +1,182 @@
+<html>
+<head>
+<title>Beginners Guide to Minetest Modding</title>
+
+<link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+
+<table width="100%" bgcolor="#FFFFBB">
+<tr>
+<td width="80"><img src="1.png" width=80 alt="Minetest Logo" /></td>
+<th><center><h1>Minetest-c55: Beginners Guide to Modding in Lua</h1><center></th>
+</tr>
+</table>
+
+
+<h1>Introduction</h1>
+<table>
+<tr>
+<td>
+<img src="2.png" height=200 alt="Screenshot" />
+</td>
+<td>
+<p><a href="http://minetest.net">Minetest-c55</a> is a Minecraft clone, developed by the Finnish programmer 'celeron55' and contributors.</p>
+
+<p>Minetest has been built with the intention of making it easy for anyone to program Mods (Modifications), 
+extending its features and adding new items.</p>
+
+<p>In this tutorial we'll show you how to get started writing Mods for Minetest using Lua.  
+Along the way you'll start learning how to write programs in Lua.</p>
+
+<p>If you already know a programming language like Java, Javascript, Python, etc., then you should find it reasonably easy to get started in Lua.  If you are new to programming, don't worry.  We'll go slowly and show you exactly what to do.  
+If you would like to learn more about programming in Lua there are lots of places on the web that can help.  We're put a <a href="#learntocode">list of suggested programming resources</a> at the end of this tutorial.</p>
+
+</td>
+</tr>
+</table>
+
+
+
+<h2><a name="chap1">Chapter 1 - Modding basics</a></h2>
+
+<h3>Why Would You Want to Write a Mod?</h3>
+<p>
+The computer program that runs Minetest is split into two main parts.  First, there is the
+&quot;Engine&quot;.  This looks after drawing the world on the screen, keeping track of players and objects in the game, all the communications in a multiplayer game, etc.  Second, there are the &quot;Mods&quot;.  Mods decide what things in the game look like and how they work.  Mods deal with all the crafting.   Mods define what happens when you hit things.  Without the Mods the game would run, but it wouldn't be very interesting.
+</p>
+<p>The people who wrote Minetest have made it really easy for you to change how the game works by writing your own Mods.  This means that with a little bit of knowledge of how to write small bits of computer programs you can change Minetest to work in any way that you can imagine.  Really.  You want trees to fly? No problem.  You want to have a working farm? Someone's already done that one.  You want chests to send tweets to Twitter whenever someone takes something out of them? That one will take a little work.
+</p>
+
+<h3>Writing Your First Mod</h3>
+
+<p>To get ourselves started, let's write a simple Mod.  What we'll do is change the game so that when you hit a brick block it complains at the injustice you have just caused it.</p>
+
+<h4>Set Up</h4>
+
+<p>Follow these steps to get yourself started:</p>
+<ol>
+<li>Start up Minetest</li>
+<li>Create a new single player world.  Make sure it is a &quot;Minetest&quot; world and not a &quot;Build&quot; world</li>
+<li>Call the world &quot;Modding Tutorial&quot;</li>
+<li>Play the Modding Tutorial -- remember to put a check in the &quot;Creative Mode&quot; box</li>
+<li>Put down a brick block somewhere pleasing</li>
+<li>Hit the brick block and check that nothing unusual happens</li>
+</ol>
+
+<h4>Installing a Text Editor</h4>
+
+<p>In order to write computer programs, you are going to need to use a text editor.  If you already know what
+a text editor is, then you probably have a favourite one ready to go.  If you don't know what a text editor is
+and you are using Windows, then Notepad++ is a good choice.  You can download and install a copy from 
+<a href="http://notepad-plus-plus.org/">http://notepad-plus-plus.org/</a>.</p>
+
+<h4>Finding Where to Put Your Mods</h4>
+
+<p>The next bit can be a bit fiddly.  If you get stuck ask someone for some help.  You need to find the
+folder where you installed Minetest.  I unpacked my Minetest on my &quot;C:\&quot; folder on Windows.  If I open 
+the &quot;Computer&quot; folder in Windows and click on &quot;Local Disk (C:)&quot;, I can find a folder called
+&quot;minetest-0.4.6&quot;.  This is the where I installed Minetest.  Make sure you can find the folder where
+you installed Minetest as this is the place you need to go to write your Mods.  If you are stuck, ask someone for help.</p>
+
+<h4>Writing Your First Mod</h4>
+
+<p>Now that you have found the folder where you installed Minetest, let's write our first Mod.  This will be a 
+simple, but polite, Mod that will say hello to us as we start the game.  Inside the folder where you installed
+Minetest double click to open the folder called &quot;mods&quot;.  Double click again to open the folder called &quot;minetest&quot;.  We now need to make a new folder in this minetest directory for our new Mod.  In Windows right-click the empty space in the folder and choose &quot;New =&gt; Folder&quot;.  Change the name of the folder to &quot;chatty-bricks&quot;.
+</p>
+<p>So far so good.  We've created a folder to hold our new Mod.  Now we actually need to write some code.
+Open up your text editor (Notepad++ or your favorite) and tell it to create a new blank text document.  Type the following lines into the new text document:
+</p>
+<code><pre>
+print("++++++++ Hello from me +++++++++")
+</pre>
+</code>
+
+<p>
+Now you need to save the document.  Save it in the &quot;chatty-bricks&quot; folder that you just
+made.  Call the document &quot;init.lua&quot;.  Be careful not to save it as &quot;init.lua.txt&quot; by mistake.</p>
+
+<p>We have reached the moment of truth.  Go and fire up Minetest.  As you start the program you should see a console window pop up behind the main Minetest window. Move the windows around so that you can see the console window.  Keep one eye on the console window as you double click to open a single player world.  Did you see your hello line appear?  If you did, perform a celebratory dance of your own choosing.  If you didn't, ask the person sitting next to you to see if they can help you figure out what went wrong.
+</p>
+
+<p>
+<strong>Challenge:</strong>  Try changing your program to make it say something different.  Be polite!!!
+</p>
+
+
+<h4>Making the Mod More Interesting</h4>
+
+<p>
+While I was impressed by that, I've a feeling your friends may be somewhat underwhelmed if you brought them round specially to show them your new Minetest Mod.  Let's improve on it a bit.  Open up your editor again and edit the init.lua file.  After the print statement you created in the previous step, on a new line add the following:
+</p>
+
+<code><pre>
+minetest.after(5,
+	function(params)
+		minetest.chat_send_all("BEWARE THIS GAME HAS BEEN MOD'ED!")
+	end
+)
+</pre>
+</code>
+
+<p>Save your init.lua.  Close your single player world in Minetest and then reopen it.  Five seconds after you start the game you should get the message appear as a chat in the main game.</p>
+
+
+<p>
+<strong>Challenge:</strong>The number 5 in the code tells Minetest how many seconds to wait before sending the message.  Add some more &quot;after&quot; functions so that Minetest does a count-down from 10 to 1.
+</p>
+
+
+<h4>Now For Those Chatty Bricks</h4>
+
+<p>We're nearly there.  The last thing for us to do is add some code to our Mod that makes bricks
+complain when you hit them.  We've already seen the chat_send_all function that sends a message.
+What we need to use now is register_on_punchnode function to tell the game what to do when someone
+hits a brick.</p>
+
+<p>Add this to your init.lua file:</p>
+
+<code><pre>
+minetest.register_on_punchnode(
+	function(pos, node, puncher)
+		if node.name == "default:brick" then
+			minetest.chat_send_all("Hey!!  Stop it!!  That hurts")
+		end
+	end
+)
+</pre>
+</code>
+
+<p>
+<strong>Challenge:</strong> Add some more code to do make a different type of block say something.
+</p>
+
+<p>
+<strong>Challenge:</strong> Change the message so that the brick uses the name of the person who punched it.
+</p>
+
+<p>
+<strong>Challenge (Tricky!):</strong> See if you can use the minetest.sound_play function to make the brick make a noise when you hit it.
+</p>
+
+
+<hr/>
+
+<h1>Apendix</h1>
+
+<h3>Where to Look for More Help</h3>
+
+<ul>
+<li>List of all the minetest.___ functions:  <a href="http://dev.minetest.net/Global_Minetest_object">http://dev.minetest.net/Global_Minetest_object</a></li>
+<li>Another Minetest tutorial:  <a href="http://dev.minetest.net/Intro">http://dev.minetest.net/Intro</a></li>
+</ul>
+
+<hr/>
+
+<h3>Credits and Afterword</h3>
+
+<p>This is page is adapted from Jeija's Modding tutorial by Dave Potts (<a href="https://github.com/davegoopot">davegoopot</a> on GitHub).</p>
+
+</body>
+</html>
